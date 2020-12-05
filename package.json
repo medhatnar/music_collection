@@ -1,0 +1,14 @@
+{
+  "name": "music_collection",
+  "version": "1.0.0",
+  "description": "primary project",
+  "main": "music.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "nar",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
