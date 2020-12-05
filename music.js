@@ -8,18 +8,16 @@ const rl = readline.createInterface({
 
 console.log("Welcome to your music collection!");
 
-const DATABASE = {};
-
 class MusicCollection {
   constructor() {
     this.database = {};
   }
 
   add(title, artist) {
-    const normalizedTitle = title.replace(/\"/g, "");
-    const normalizedArtist = artist.replace(/\"/g, "");
+    const normalizedTitle = this.normalize(title);
+    const normalizedArtist = this.normalize(artist);
 
-    if (this.database.hasOwnProperty(normalizedTitle)) {
+    if (this.database.hasOwnProperty(this.normalize(title))) {
       console.log("An album of this title already exists in your collection.");
     } else {
       this.database[normalizedTitle] = {
@@ -35,7 +33,7 @@ class MusicCollection {
   }
 
   play(title) {
-    const normalizedTitle = title.replace(/\"/g, "");
+    const normalizedTitle = this.normalize(title);
 
     if (this.database.hasOwnProperty(normalizedTitle)) {
       this.database[normalizedTitle].playStatus = "played";
@@ -69,32 +67,33 @@ class MusicCollection {
     }
   }
 
-  filter(filters) {
-    console.log("filters", filters);
-    if (!filters) return this.database;
+  filter(filters = []) {
+    if (filters.length < 1) return this.database;
 
-    let index = filters.length - 1;
-    let filteredLibrary = JSON.parse(JSON.stringify(this.database));
+    let currentIndex = filters.length - 1;
+    const filteredLibrary = JSON.parse(JSON.stringify(this.database));
 
-    while (index >= 0) {
+    while (currentIndex >= 0) {
       for (const entry in filteredLibrary) {
-        const normalizedFilter = filters[index].replace(/\"/g, "");
-        const values = Object.values(filteredLibrary[entry]);
-        console.log(
-          "values",
-          values,
-          values.includes(normalizedFilter),
-          normalizedFilter
-        );
-        if (!values.includes(normalizedFilter)) {
+        const normalizedFilter = this.normalize(filters[currentIndex]);
+        const entryValues = Object.values(filteredLibrary[entry]);
+
+        if (!entryValues.includes(normalizedFilter)) {
           delete filteredLibrary[entry];
         }
       }
-      index -= 1;
-      console.log(this.database);
+
+      currentIndex -= 1;
     }
 
     return filteredLibrary;
+  }
+
+  normalize(word) {
+    return word.replace(/\"/g, "");
+  }
+  normalizeEntries(entries = [""]) {
+    return entries.map((entry) => this.normalize(entry));
   }
 }
 
@@ -108,13 +107,13 @@ rl.on("line", (line) => {
 
   switch (action) {
     case "add":
-      collection.add(inputEntries[0], inputEntries[1]);
+      collection.add(...inputEntries);
       break;
     case "play":
-      collection.play(inputEntries[0]);
+      collection.play(...inputEntries);
       break;
     case "show all":
-      collection.showAll(null);
+      collection.showAll();
       break;
     case "show all by":
       collection.showAll(inputEntries);
@@ -125,72 +124,11 @@ rl.on("line", (line) => {
     case "show unplayed by":
       collection.showUnplayed(["unplayed", ...inputEntries]);
       break;
+    case "quit":
+      console.log("Bye!");
+      return rl.close();
     default:
       console.log(`Sorry we do not support the action ${action} currently.`);
   }
   rl.prompt();
 });
-
-// rl.on("line", (line) => {
-//   const inputs = line.split(' "');
-//   console.log("inputs", inputs);
-
-//   if (inputs[0] === "add") {
-//     const title = `"${inputs[1]}`;
-//     const artist = inputs[2].slice(0, inputs[2].length - 1);
-
-//     if (DATABASE.hasOwnProperty(title)) {
-//       console.log("An album of this title already exists in your collection.");
-//     }
-
-//     DATABASE[title] = { artist, playStatus: "unplayed" };
-
-//     console.log("\n", `Added ${title} by ${artist}`, "\n");
-//   } else if (inputs[0] === "play") {
-//     const title = `"${inputs[1]}`;
-//     if (DATABASE.hasOwnProperty(title)) {
-//       console.log(
-//         "\n",
-//         `You're listening to ${title} by ${DATABASE[title].artist}`
-//       );
-//       DATABASE[title].playStatus = "played";
-//     } else {
-//       console.log("YOUR MUSIC COLLECTION DOES NOT CONTAIN THIS TITLE");
-//     }
-//   } else if (inputs[0] === "show unplayed") {
-//     for (const entry in DATABASE) {
-//       if (DATABASE[entry].playStatus === "unplayed") {
-//         console.log("\n", `${entry} by ${DATABASE[entry].artist}`);
-//       }
-//     }
-//   } else if (inputs[0] === "show all") {
-//     for (const entry in DATABASE) {
-//       console.log(
-//         "\n",
-//         `${entry} by ${DATABASE[entry].artist} (${DATABASE[entry].playStatus})`
-//       );
-//     }
-//   } else if (inputs[0] === "show all by") {
-//     const artist = inputs[1].slice(0, inputs[1].length - 1);
-//     for (const entry in DATABASE) {
-//       if (DATABASE[entry].artist === artist) {
-//         console.log(
-//           "\n",
-//           `${entry} by ${DATABASE[entry].artist} (${DATABASE[entry].playStatus})`
-//         );
-//       }
-//     }
-//   } else if (inputs[0] === "show unplayed by") {
-//     const artist = inputs[1].slice(0, inputs[1].length - 1);
-//     for (const entry in DATABASE) {
-//       if (
-//         DATABASE[entry].artist === artist &&
-//         DATABASE[entry].playStatus === "unplayed"
-//       ) {
-//         console.log("\n", `${entry} by ${DATABASE[entry].artist})`);
-//       }
-//     }
-//   }
-
-//   rl.prompt();
-// });
