@@ -14,25 +14,17 @@ class MusicCollection {
     this.database[title] = {
       title,
       artist,
-      played: "unplayed",
+      played: false,
     };
 
-    console.log(
-      "\n",
-      `Added "${this.database[title].title}" by ${this.database[title].artist}`,
-      "\n"
-    );
+    return `Added "${this.database[title].title}" by ${this.database[title].artist}`;
   }
 
   play({ title }) {
     if (this.database.hasOwnProperty(title)) {
-      this.database[title].played = "played";
+      this.database[title].played = true;
 
-      console.log(
-        "\n",
-        `You're listening to ${title} by ${this.database[title].artist}`,
-        "\n"
-      );
+      return `You're listening to ${title} by ${this.database[title].artist}`;
     } else {
       throw new Error(
         `The album, '${title}', does not exist in your music collection. Please add it first.`
@@ -40,17 +32,11 @@ class MusicCollection {
     }
   }
 
-  show({ filters = [], displayPlayStatus = false }) {
+  show({ filters = [] }) {
     const filteredResults =
       filters.length < 1 ? this.database : this.filter({ filters });
 
-    for (const entry in filteredResults) {
-      console.log(
-        `${entry} by ${filteredResults[entry].artist} ${
-          displayPlayStatus ? `(${filteredResults[entry].played})` : ""
-        }`
-      );
-    }
+    return filteredResults;
   }
 
   filter({ filters }) {
