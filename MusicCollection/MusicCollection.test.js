@@ -10,9 +10,7 @@ describe("MusicCollection", () => {
 
       const result = musicCollection.add({ title, artist });
 
-      expect(musicCollection.database).toStrictEqual({
-        [title]: { title, artist, played: "unplayed" },
-      });
+      expect(result).toBe(`Added "${title}" by ${artist}`);
     });
 
     test("it throws error when not all arguments are passed", () => {
@@ -45,6 +43,18 @@ describe("MusicCollection", () => {
   });
 
   describe("play", () => {
+    test("it plays title user inputs", () => {
+      const title = "Blonde";
+      const artist = "Frank Ocean";
+      const musicCollection = new MusicCollection();
+
+      musicCollection.add({ title, artist });
+
+      const result = musicCollection.play({ title });
+
+      expect(result).toBe(`You're listening to ${title} by ${artist}`);
+    });
+
     test("it updates title as played", () => {
       const title = "Blonde";
       const artist = "Frank Ocean";
@@ -76,19 +86,16 @@ describe("MusicCollection", () => {
   });
 
   describe("show", () => {
-    test("prints filtered results formatted", () => {
+    test("returns all or all filtered results to display", () => {
       const title = "Blonde";
       const artist = "Frank Ocean";
       const musicCollection = new MusicCollection();
-      const logger = jest.spyOn(console, "log");
 
       musicCollection.add({ title, artist });
 
-      musicCollection.show({ displayPlayStatus: true });
+      const result = musicCollection.show({ filters: [] });
 
-      expect(logger).toHaveBeenLastCalledWith(
-        "Blonde by Frank Ocean (unplayed)"
-      );
+      expect(result).toStrictEqual(musicCollection.database);
     });
   });
 

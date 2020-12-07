@@ -14,7 +14,7 @@ class MusicCollection {
     this.database[title] = {
       title,
       artist,
-      played: false,
+      played: "unplayed",
     };
 
     return `Added "${this.database[title].title}" by ${this.database[title].artist}`;
@@ -22,7 +22,7 @@ class MusicCollection {
 
   play({ title }) {
     if (this.database.hasOwnProperty(title)) {
-      this.database[title].played = true;
+      this.database[title].played = "played";
 
       return `You're listening to ${title} by ${this.database[title].artist}`;
     } else {
