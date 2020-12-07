@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest"
   },
-  "author": "nar",
+  "author": "nar shahin",
   "license": "ISC",
   "devDependencies": {
     "jest": "^26.6.3"
