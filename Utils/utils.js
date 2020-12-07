@@ -1,7 +1,7 @@
 // only leaves word with alphanumeric characters and white space
 
 const normalize = (word = "") => {
-  return word.replace(/['"]+/g, "");
+  return word.replace(/['",\s]+/g, "");
 };
 const normalizeEntries = (entries = [""]) => {
   return entries.map((entry) => normalize(entry));
