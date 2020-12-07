@@ -4,8 +4,6 @@ class MusicCollection {
   }
 
   add({ title, artist }) {
-      console.log("TITLE", title, "ARTIST", artist);
-      
     if (!title || !artist)
       throw new Error("Please provide both an album's title and artist.");
     if (this.database.hasOwnProperty(title))
@@ -16,7 +14,7 @@ class MusicCollection {
     this.database[title] = {
       title,
       artist,
-      played: 'unplayed',
+      played: "unplayed",
     };
 
     console.log(
@@ -49,8 +47,7 @@ class MusicCollection {
     for (const entry in filteredResults) {
       console.log(
         `${entry} by ${filteredResults[entry].artist} ${
-          displayPlayStatus ?
-          `(${filteredResults[entry].played})`: ""
+          displayPlayStatus ? `(${filteredResults[entry].played})` : ""
         }`
       );
     }

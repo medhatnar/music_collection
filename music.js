@@ -16,7 +16,9 @@ rl.prompt();
 
 rl.on("line", (line) => {
   if (!line) {
-    console.error("Please enter a command or a command with options in quotes.");
+    console.error(
+      "Please enter a command or a command with options in quotes."
+    );
     console.log("\n", 'Example: show all by "played" "Pink Floyd" ');
   } else {
     const inputEntries = utils.normalizeEntries(line.split(' "'));

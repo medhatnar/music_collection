@@ -105,7 +105,9 @@ describe("MusicCollection", () => {
       });
 
       expect(filteredResults).toEqual(
-        expect.objectContaining({ [title]: expect.objectContaining({ artist }) })
+        expect.objectContaining({
+          [title]: expect.objectContaining({ artist }),
+        })
       );
     });
   });
