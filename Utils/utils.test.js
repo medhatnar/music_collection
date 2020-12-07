@@ -1,5 +1,4 @@
 // @ts-nocheck
-const { expect } = require("@jest/globals");
 const { normalize } = require("./Utils");
 
 describe("Utilities", () => {

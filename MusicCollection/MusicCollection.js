@@ -6,25 +6,31 @@ class MusicCollection {
   add({ title, artist }) {
     if (!title || !artist)
       throw new Error("Please provide both an album's title and artist.");
-    if (this.database.hasOwnProperty(title))
+    if (this.database.hasOwnProperty(title.toUpperCase()))
       throw new Error(
-        `An album with the title, '${title}', already exists in your collection.`
+        `An album with the title, '${this.database[title.toUpperCase()].title}', already exists in your collection.`
       );
 
-    this.database[title] = {
+    const caseInsensitiveTitle = title.toUpperCase();
+
+    this.database[caseInsensitiveTitle] = {
       title,
       artist,
       played: "unplayed",
     };
 
-    return `Added "${this.database[title].title}" by ${this.database[title].artist}`;
+    return `Added "${this.database[caseInsensitiveTitle].title}" by ${this.database[caseInsensitiveTitle].artist}`;
   }
 
   play({ title }) {
-    if (this.database.hasOwnProperty(title)) {
-      this.database[title].played = "played";
+    if (!title) throw new Error("Please provide an album title to play.");
 
-      return `You're listening to ${title} by ${this.database[title].artist}`;
+    const caseInsensitiveTitle = title.toUpperCase();
+
+    if (this.database.hasOwnProperty(caseInsensitiveTitle)) {
+      this.database[caseInsensitiveTitle].played = "played";
+      
+      return `You're listening to ${this.database[caseInsensitiveTitle].title} by ${this.database[caseInsensitiveTitle].artist}`;
     } else {
       throw new Error(
         `The album, '${title}', does not exist in your music collection. Please add it first.`

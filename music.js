@@ -41,9 +41,9 @@ rl.on("line", (line) => {
       } else {
         // all "show" commands covered here
         const actionFilters = action.split(" ");
-
+        
         const showAll = actionFilters[1] === "all";
-
+        
         const results = collection.show({
           filters: showAll ? inputEntries : [actionFilters[1], ...inputEntries],
         });
@@ -51,10 +51,9 @@ rl.on("line", (line) => {
         for (const entry in results) {
           console.log(
             "\n",
-            `${entry} by ${results[entry].artist} ${
+            `${results[entry].title} by ${results[entry].artist} ${
               showAll ? `(${results[entry].played})` : ""
-            }`,
-            "\n"
+            }`
           );
         }
       }
