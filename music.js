@@ -32,13 +32,15 @@ rl.on("line", (line) => {
 
       if (action.includes("add")) {
         console.log(
-          "\n",collection.add({ title: inputEntries[0], artist: inputEntries[1] }),"\n"
+          "\n",
+          collection.add({ title: inputEntries[0], artist: inputEntries[1] }),
+          "\n"
         );
 
       } else if (action.includes("play") && !action.includes("show")) {
         console.log("\n", collection.play({ title: inputEntries[0] }), "\n");
 
-      } else if(action.includes("show ")) {
+      } else if (action.includes("show ")) {
         // all "show" commands covered here
         const showFilters = action.split(" ");
         const showAll = showFilters[1] === "all";
@@ -55,8 +57,11 @@ rl.on("line", (line) => {
             }`
           );
         }
+
       } else {
-        throw new Error (`Sorry we currently do not support the command ${action}.`)
+        throw new Error(
+          `Sorry we currently do not support the command ${action}.`
+        );
       }
     }
   } catch (error) {
