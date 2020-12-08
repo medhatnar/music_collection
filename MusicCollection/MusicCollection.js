@@ -5,7 +5,7 @@ class MusicCollection {
 
   add({ title, artist }) {
     if (!title || !artist)
-      throw new Error("Please provide both an album's title and artist.");
+      throw new Error("Please provide both an album's title and artist in separate quotes.");
     if (this.database.hasOwnProperty(title.toUpperCase()))
       throw new Error(
         `An album with the title, '${this.database[title.toUpperCase()].title}', already exists in your collection.`
@@ -23,7 +23,7 @@ class MusicCollection {
   }
 
   play({ title }) {
-    if (!title) throw new Error("Please provide an album title to play.");
+    if (!title) throw new Error("Please provide an album title to play in quotes.");
 
     const caseInsensitiveTitle = title.toUpperCase();
 

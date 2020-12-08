@@ -24,28 +24,27 @@ rl.on("line", (line) => {
     } else {
       const inputEntries = utils.normalizeEntries(line.split(' "'));
       const action = inputEntries.shift().toLowerCase().trim();
-
+      
       if (action === "quit") {
         console.log("Bye!");
         return rl.close();
       }
-      
-      if (action === "add") {
+
+      if (action.includes("add")) {
         console.log(
-          "\n",
-          collection.add({ title: inputEntries[0], artist: inputEntries[1] }),
-          "\n"
+          "\n",collection.add({ title: inputEntries[0], artist: inputEntries[1] }),"\n"
         );
-      } else if (action === "play") {
+
+      } else if (action.includes("play") && !action.includes("show")) {
         console.log("\n", collection.play({ title: inputEntries[0] }), "\n");
-      } else {
+
+      } else if(action.includes("show ")) {
         // all "show" commands covered here
-        const actionFilters = action.split(" ");
-        
-        const showAll = actionFilters[1] === "all";
-        
+        const showFilters = action.split(" ");
+        const showAll = showFilters[1] === "all";
+
         const results = collection.show({
-          filters: showAll ? inputEntries : [actionFilters[1], ...inputEntries],
+          filters: showAll ? inputEntries : [showFilters[1], ...inputEntries],
         });
 
         for (const entry in results) {
@@ -56,6 +55,8 @@ rl.on("line", (line) => {
             }`
           );
         }
+      } else {
+        throw new Error (`Sorry we currently do not support the command ${action}.`)
       }
     }
   } catch (error) {
