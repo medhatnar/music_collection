@@ -1,4 +1,4 @@
-// only leaves word with alphanumeric characters and white space
+// removes quotes
 
 const normalize = (word = "") => {
   return word.replace(/["]+/g, "");
