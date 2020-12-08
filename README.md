@@ -17,5 +17,5 @@ Bonus:
 * You can pass any filter as long you prepend it with `show `
 
 Downside to this approach:
-* The code in `music.js` gets to be a bit clunkier in order to make it more dynamic. Nothing that isn't too huge to parse through but definitley not as straightforward to build up on without context unlike Solution 1. 
+* The code in `music.js` gets to be a bit clunkier in order to make it more dynamic. Nothing that isn't too huge to parse through but definitley not as straightforward to build up on without context, like Solution 1. 
 Otherwise though, this solution is definitley more powerful!
