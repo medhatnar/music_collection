@@ -5,13 +5,15 @@ class MusicCollection {
 
   add({ title, artist }) {
     if (!title || !artist)
-      throw new Error("Please provide both an album's title and artist.");
-    if (this.database.hasOwnProperty(title))
+      throw new Error("Please provide both an album's title and artist in separate quotes.");
+    if (this.database.hasOwnProperty(title.toUpperCase()))
       throw new Error(
-        `An album with the title, '${title}', already exists in your collection.`
+        `An album with the title, '${this.database[title.toUpperCase()].title}', already exists in your collection.`
       );
+    
+    const caseInsensitiveTitle = title.toUpperCase();
 
-    this.database[title] = {
+    this.database[caseInsensitiveTitle] = {
       title,
       artist,
       played: "unplayed",
@@ -19,18 +21,22 @@ class MusicCollection {
 
     console.log(
       "\n",
-      `Added "${this.database[title].title}" by ${this.database[title].artist}`,
+      `Added "${this.database[caseInsensitiveTitle].title}" by ${this.database[caseInsensitiveTitle].artist}`,
       "\n"
     );
   }
 
   play({ title }) {
-    if (this.database.hasOwnProperty(title)) {
-      this.database[title].played = "played";
+    if (!title) throw new Error("Please provide an album title to play in quotes.");
+
+    const caseInsensitiveTitle = title.toUpperCase();
+
+    if (this.database.hasOwnProperty(caseInsensitiveTitle)) {
+      this.database[caseInsensitiveTitle].played = "played";
 
       console.log(
         "\n",
-        `You're listening to ${title} by ${this.database[title].artist}`,
+        `You're listening to ${this.database[caseInsensitiveTitle].title} by ${this.database[caseInsensitiveTitle].artist}`,
         "\n"
       );
     } else {
@@ -46,7 +52,7 @@ class MusicCollection {
 
     for (const entry in filteredResults) {
       console.log(
-        `${entry} by ${filteredResults[entry].artist} ${
+        `${filteredResults[entry].title} by ${filteredResults[entry].artist} ${
           displayPlayStatus ? `(${filteredResults[entry].played})` : ""
         }`
       );

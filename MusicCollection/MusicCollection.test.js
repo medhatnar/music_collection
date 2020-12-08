@@ -11,7 +11,7 @@ describe("MusicCollection", () => {
       const result = musicCollection.add({ title, artist });
 
       expect(musicCollection.database).toStrictEqual({
-        [title]: { title, artist, played: "unplayed" },
+        [title.toUpperCase()]: { title, artist, played: "unplayed" },
       });
     });
 
@@ -22,7 +22,9 @@ describe("MusicCollection", () => {
       const notPassingAllParams = () => musicCollection.add({ title });
 
       expect(notPassingAllParams).toThrowError(
-        new Error("Please provide both an album's title and artist.")
+        new Error(
+          "Please provide both an album's title and artist in separate quotes."
+        )
       );
     });
 
@@ -51,13 +53,13 @@ describe("MusicCollection", () => {
       const musicCollection = new MusicCollection();
 
       musicCollection.add({ title, artist });
-      expect(musicCollection.database[title]).toHaveProperty(
+      expect(musicCollection.database[title.toUpperCase()]).toHaveProperty(
         "played",
         "unplayed"
       );
 
       musicCollection.play({ title });
-      expect(musicCollection.database[title]).toHaveProperty(
+      expect(musicCollection.database[title.toUpperCase()]).toHaveProperty(
         "played",
         "played"
       );
@@ -71,6 +73,17 @@ describe("MusicCollection", () => {
 
       expect(addingNonExistingTitle).toThrowError(
         `The album, '${title}', does not exist in your music collection. Please add it first.`
+      );
+    });
+
+    test("throws error if no title is passed", () => {
+      const musicCollection = new MusicCollection();
+
+      const addingNonExistingTitle = () =>
+        musicCollection.play({ title: undefined });
+
+      expect(addingNonExistingTitle).toThrowError(
+        "Please provide an album title to play in quotes."
       );
     });
   });
@@ -106,7 +119,7 @@ describe("MusicCollection", () => {
 
       expect(filteredResults).toEqual(
         expect.objectContaining({
-          [title]: expect.objectContaining({ artist }),
+          [title.toUpperCase()]: expect.objectContaining({ artist }),
         })
       );
     });
